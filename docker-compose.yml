@@ -1,0 +1,21 @@
+services:
+  department:
+    container_name: department
+    build: .
+    restart: always
+    env_file:
+      - .env
+    command: sh -c "npx prisma migrate deploy && npx prisma generate && npm start"
+    networks:
+      - dev_network
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    ports:
+      - "3017:3001"
+
+networks:
+  dev_network:
+    external: true
+
+volumes:
+  db-data:
