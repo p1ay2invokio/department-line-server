@@ -77,7 +77,7 @@ app.post("/list", async (req, res) => {
 
     // console.log(dayjs(lists.createdAt).format('DD/MM/YY HH:mm'))
 
-    line.push(process.env.ROOM || '', `สินค้า : ไม่ผ่าน GIC\nประจำวันที่: ${dayjs(lists.createdAt).tz('Asia/Bangkok').format('DD/MM/YY')}\n\n(GR ตรวจรับสินค้าเสร็จสิ้น 🟢)\n\nhttps://department-line.vercel.app`)
+    line.push(process.env.ROOM || '', `สินค้า : ไม่ผ่าน GIC\nประจำวันที่: ${dayjs(lists.createdAt).tz('Asia/Bangkok').format('DD/MM/YY')}\nhttps://department-line.vercel.app`)
 
     res.status(201).send({ success: true, message: "Inserted Successfully!" })
 })
