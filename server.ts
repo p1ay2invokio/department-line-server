@@ -96,7 +96,7 @@ app.patch("/list", async (req, res) => {
         }
     })
 
-    line.push(process.env.ROOM || '', `สินค้า : ${lists.product}\nพนักงานGR : ${lists.sender}\nตรวจรับสินค้าเสร็จเมื่อ\n${dayjs(lists.createdAt).tz('Asiz/Bangkok').format('DD/MM/YY HH:mm')}\n\nGR -> แผนก${lists.department}\n\n(PC รับสินค้าสำเร็จ 🟢)`)
+    line.push(process.env.ROOM || '', `สินค้า : ${lists.product}\nพนักงานGR : ${lists.sender}\nตรวจรับสินค้าเสร็จเมื่อ\n${dayjs(lists.createdAt).tz('Asia/Bangkok').format('DD/MM/YY HH:mm')}\n\nGR -> แผนก${lists.department}\n\n(PC รับสินค้าสำเร็จ 🟢)`)
 
     res.status(200).send({ success: true, message: "Updated Successfully!" })
 })
