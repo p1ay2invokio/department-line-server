@@ -4,6 +4,11 @@ import dotenv from 'dotenv'
 import { prisma } from './appDataSource'
 import { Whanjeabs } from 'whanjeabs'
 import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+
+dayjs.extend(timezone)
+dayjs.extend(utc)
 
 
 const env = dotenv.config()
@@ -19,9 +24,16 @@ app.use(cors())
 let line = new Whanjeabs({ api_key: process.env.WHANJEABS_API_KEY || '', channel_access: process.env.LINE_CHANNEL_ACCESS || '' })
 
 app.get("/list", async (req, res) => {
+
+    let today = dayjs().toISOString()
+
+    console.log(today)
+
     let lists = await prisma.list.findMany({
         orderBy: {
             id: 'desc'
+        }, where: {
+            createdAt: today
         }
     })
 
@@ -60,7 +72,7 @@ app.post("/list", async (req, res) => {
 
     // console.log(dayjs(lists.createdAt).format('DD/MM/YY HH:mm'))
 
-    line.push(process.env.ROOM || '', `สินค้า : ${product}\nพนักงาน : ${sender}\nตรวจรับสินค้าเสร็จเมื่อ\n${dayjs(lists.createdAt).format('DD/MM/YY HH:mm')}\n\n${from} -> แผนก${department}\n\n(GR ตรวจรับสินค้าเสร็จสิ้น 🟢)`)
+    line.push(process.env.ROOM || '', `สินค้า : ${product}\nพนักงานGR : ${sender}\nตรวจรับสินค้าเสร็จเมื่อ\n${dayjs(lists.createdAt).tz('Asia/Bangkok').format('DD/MM/YY HH:mm')}\n\n${from} -> แผนก${department}\n\n(GR ตรวจรับสินค้าเสร็จสิ้น 🟢)\n\nhttps://department-line.vercel.app`)
 
     res.status(201).send({ success: true, message: "Inserted Successfully!" })
 })
@@ -79,7 +91,7 @@ app.patch("/list", async (req, res) => {
         }
     })
 
-    line.push(process.env.ROOM || '', `สินค้า : ${lists.product}\nพนักงาน : ${lists.sender}\nตรวจรับสินค้าเสร็จเมื่อ\n${dayjs(lists.createdAt).format('DD/MM/YY HH:mm')}\n\nGR -> แผนก${lists.department}\n\n(PC รับสินค้าสำเร็จ 🟢)`)
+    line.push(process.env.ROOM || '', `สินค้า : ${lists.product}\nพนักงานGR : ${lists.sender}\nตรวจรับสินค้าเสร็จเมื่อ\n${dayjs(lists.createdAt).tz('Asiz/Bangkok').format('DD/MM/YY HH:mm')}\n\nGR -> แผนก${lists.department}\n\n(PC รับสินค้าสำเร็จ 🟢)`)
 
     res.status(200).send({ success: true, message: "Updated Successfully!" })
 })
