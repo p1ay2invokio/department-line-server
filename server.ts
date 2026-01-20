@@ -25,15 +25,20 @@ let line = new Whanjeabs({ api_key: process.env.WHANJEABS_API_KEY || '', channel
 
 app.get("/list", async (req, res) => {
 
-    let today = dayjs().tz('Asia/Bangkok').toISOString()
+    let startOfDay = dayjs().tz('Asia/Bangkok').startOf('day').toISOString();
+    let endOfDay = dayjs().tz('Asia/Bangkok').endOf('day').toISOString();
+    // let today = dayjs().tz('Asia/Bangkok').toISOString()
 
-    console.log(today)
+    // console.log(today)
 
     let lists = await prisma.list.findMany({
         orderBy: {
             id: 'desc'
         }, where: {
-            createdAt: today
+            createdAt: {
+                gte: startOfDay,
+                lte: endOfDay
+            }
         }
     })
 
