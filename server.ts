@@ -25,7 +25,7 @@ let line = new Whanjeabs({ api_key: process.env.WHANJEABS_API_KEY || '', channel
 
 app.get("/list", async (req, res) => {
 
-    let today = dayjs().toISOString()
+    let today = dayjs().tz('Asia/Bangkok').toISOString()
 
     console.log(today)
 
