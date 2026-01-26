@@ -23,6 +23,7 @@ model List {
   department String?
 
   status Int?
+  qty    Int?
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt

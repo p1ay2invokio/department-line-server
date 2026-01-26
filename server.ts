@@ -62,7 +62,7 @@ app.delete("/list/:id", async (req, res) => {
 app.post("/list", async (req, res) => {
 
 
-    let { product, sender, department, from } = req.body
+    let { product, sender, department, from, qty } = req.body
 
     let lists = await prisma.list.create({
         data: {
@@ -70,7 +70,8 @@ app.post("/list", async (req, res) => {
             sender: sender,
             from: from,
             department: department,
-            status: 0
+            status: 0,
+            qty: Number(qty)
         }
     })
 
